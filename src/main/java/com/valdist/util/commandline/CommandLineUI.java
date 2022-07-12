@@ -77,13 +77,18 @@ public class CommandLineUI {
         return builder.build().get();
     }
 
-    public void execute(Collection<Execution> instruction, boolean inLoop){
+    public void execute(Collection<Execution> instruction, Execution breakingExecution, boolean inLoop){
         instruction.forEach(current -> System.out.printf("%s - %s%n", current.getCommand(), current.getDescription()));
+        System.out.printf("%s - %s%n", breakingExecution.getCommand(), breakingExecution.getDescription());
         String input = getString("Input");
+        if(input.equalsIgnoreCase(breakingExecution.getCommand())) {
+            breakingExecution.execute();
+            return;
+        }
         instruction.stream().filter(element -> element.getCommand().equalsIgnoreCase(input)).findFirst().ifPresent(Execution::execute);
 
         if(inLoop){
-            if(getBoolean("Repeat?", "y")) execute(instruction, inLoop);
+            if(getBoolean("Repeat?", "y")) execute(instruction, breakingExecution, inLoop);
         }
     }
 
