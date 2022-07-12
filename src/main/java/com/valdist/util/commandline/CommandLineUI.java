@@ -5,6 +5,7 @@ import com.valdist.entity.account.bank.BankAccount;
 import com.valdist.entity.transaction.Transaction;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -74,6 +75,16 @@ public class CommandLineUI {
                     .setCurrency("USD");
         } while (builder.build().isEmpty());
         return builder.build().get();
+    }
+
+    public void execute(Collection<Execution> instruction, boolean inLoop){
+        instruction.forEach(current -> System.out.printf("%s - %s%n", current.getCommand(), current.getDescription()));
+        String input = getString("Input");
+        instruction.stream().filter(element -> element.getCommand().equalsIgnoreCase(input)).findFirst().ifPresent(Execution::execute);
+
+        if(inLoop){
+            if(getBoolean("Repeat?", "y")) execute(instruction, inLoop);
+        }
     }
 
     public void println(Object message) {
