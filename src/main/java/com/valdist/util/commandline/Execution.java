@@ -1,11 +1,7 @@
 package com.valdist.util.commandline;
 
 public class Execution {
-    public interface Action{
-        void run();
-    }
-
-    public Execution(String command, String description, Action action) {
+    public Execution(String command, String description, Runnable action) {
         this.command = command;
         this.description = description;
         this.action = action;
@@ -13,7 +9,7 @@ public class Execution {
 
     private String command;
     private String description;
-    private Action action;
+    private Runnable action;
 
     public String getCommand(){
         return command;
