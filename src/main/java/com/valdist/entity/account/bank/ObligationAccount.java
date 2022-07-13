@@ -1,4 +1,4 @@
-package com.valdist.entity.account.bank.obligation;
+package com.valdist.entity.account.bank;
 
 import com.valdist.entity.account.Account;
 
