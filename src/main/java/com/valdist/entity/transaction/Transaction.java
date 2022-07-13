@@ -1,5 +1,6 @@
 package com.valdist.entity.transaction;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -8,11 +9,11 @@ import java.util.Optional;
 public class Transaction implements Comparable<Transaction> {
     private final LocalDate date;
     private final String name;
-    private final long amount;
+    private final BigDecimal amount;
     private final Type type;
     private final String currency;
 
-    private Transaction(long amount, LocalDate date, Type type, String currency, String name) {
+    private Transaction(BigDecimal amount, LocalDate date, Type type, String currency, String name) {
         this.amount = amount;
         this.name = name;
         this.date = date;
@@ -33,7 +34,7 @@ public class Transaction implements Comparable<Transaction> {
         return name;
     }
 
-    public long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -43,7 +44,7 @@ public class Transaction implements Comparable<Transaction> {
     public int compareTo(Transaction o) {
         if (this.date.isEqual(o.date)) {
             if (this.name.equalsIgnoreCase(o.name)) {
-                if (this.amount < o.amount) return -1;
+                if (this.amount.compareTo(o.amount) < 0) return -1;
                 else return 1;
             }
             return this.name.compareTo(o.name);
@@ -56,7 +57,7 @@ public class Transaction implements Comparable<Transaction> {
         if (this == o) return true;
         if (!(o instanceof Transaction)) return false;
         Transaction that = (Transaction) o;
-        return Double.compare(that.amount, amount) == 0 && Objects.equals(date, that.date) && Objects.equals(name, that.name);
+        return this.amount.compareTo(((Transaction) o).amount) == 0 && Objects.equals(date, that.date) && Objects.equals(name, that.name);
     }
 
     @Override
@@ -69,13 +70,13 @@ public class Transaction implements Comparable<Transaction> {
         return "TRANSACTION: DATE " + date.toString() + ", NAME " + name + ", AMOUNT " + amount;
     }
 
-    public static enum Type {POS, EPOS, ATM, P2P, SEP, OBLIGATION, SERVICE}
+    public enum Type {POS, EPOS, ATM, P2P, SEP, OBLIGATION, SERVICE}
 
     //builder для пошагового создания транзакции
     public static class Builder {
         private LocalDate date;
         private String name;
-        private long amount = 0;
+        private BigDecimal amount = BigDecimal.ZERO;
         private Type type;
         private String currency;
 
@@ -102,7 +103,7 @@ public class Transaction implements Comparable<Transaction> {
             return this;
         }
 
-        public Builder setAmount(long amount) {
+        public Builder setAmount(BigDecimal amount) {
             this.amount = amount;
             return this;
         }

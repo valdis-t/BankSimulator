@@ -5,13 +5,15 @@ import com.valdist.entity.transaction.Transaction;
 import com.valdist.exception.account.AccountException;
 import com.valdist.exception.processing.AccountHasNotFoundException;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 //mock processing center
 public class ProcessingCenter {
-    private Map<Long, Account> accounts;
+    private final Map<BigInteger, Account> accounts;
     private Account currentAccount;
 
     public ProcessingCenter(Collection<Account> accounts) {
@@ -22,7 +24,7 @@ public class ProcessingCenter {
         });
     }
 
-    public ProcessingCenter setCurrentAccount(long accountNumber) throws AccountHasNotFoundException {
+    public ProcessingCenter setCurrentAccount(BigInteger accountNumber) throws AccountHasNotFoundException {
         if (accounts.containsKey(accountNumber)) currentAccount = accounts.get(accountNumber);
         else throw new AccountHasNotFoundException(accountNumber);
         return this;
@@ -44,17 +46,17 @@ public class ProcessingCenter {
         return true;
     }
 
-    public Collection<Long> getAccountNumbers() {
+    public Collection<BigInteger> getAccountNumbers() {
         return accounts.keySet();
     }
 
     //получить номер текущего аккаунта
-    public long getAccountNumber() {
+    public BigInteger getAccountNumber() {
         return currentAccount.getAccountNumber();
     }
 
     //получить полный доступный баланс текущего аккаунта
-    public long getAvailableBalance() {
+    public BigDecimal getAvailableBalance() {
         return currentAccount.getBalance();
     }
 

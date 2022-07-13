@@ -17,9 +17,9 @@ public class BankAccountTest {
                     BankAccount.Builder bankAccountBuilder = new BankAccount.Builder();
                     do {
                         bankAccountBuilder.setName(ui.getString("Введи имя аккаунта"));
-                        bankAccountBuilder.setAccountNumber(ui.getLong("Введи номер счета"));
-                        bankAccountBuilder.setPrivateMoneyBalance(ui.getLong("Введи личные средства"));
-                        bankAccountBuilder.setInitialOverdraft(ui.getLong("Введи овердрафт"));
+                        bankAccountBuilder.setAccountNumber(ui.getBigInteger("Введи номер счета"));
+                        bankAccountBuilder.setPrivateMoneyBalance(ui.getBigDecimal("Введи личные средства"));
+                        bankAccountBuilder.setInitialOverdraft(ui.getBigDecimal("Введи овердрафт"));
                         bankAccountBuilder.setCurrency(ui.getString("Введи валюту аккаунта"));
                     } while (bankAccountBuilder.build().isEmpty());
                     account = bankAccountBuilder.build().get();

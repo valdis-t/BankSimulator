@@ -1,14 +1,16 @@
 package com.valdist.entity.account;
 
-import com.valdist.exception.account.AccountException;
 import com.valdist.entity.transaction.Transaction;
+import com.valdist.exception.account.AccountException;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 //класс, описываюзий логику абстрактоного аккаунта
 public abstract class Account {
     //номер счета аккаунта
-    protected final long accountNumber;
+    protected final BigInteger accountNumber;
     //имя аккаунта
     protected final String name;
     //валюта аккаунта
@@ -18,9 +20,9 @@ public abstract class Account {
     //список неуспешных операций с аккаунтом, mock
     protected final Map<Transaction, AccountException> failedTransaction;
     //баланс личных средств
-    protected long balance;
+    protected BigDecimal balance;
 
-    protected Account(long accountNumber, String name, long balance, String currency) {
+    protected Account(BigInteger accountNumber, String name, BigDecimal balance, String currency) {
         transactions = new TreeSet<>();
         failedTransaction = new HashMap<>();
         this.accountNumber = accountNumber;
@@ -42,7 +44,7 @@ public abstract class Account {
     }
 
     //получить номер аккаунта
-    public final long getAccountNumber() {
+    public final BigInteger getAccountNumber() {
         return accountNumber;
     }
 
@@ -52,7 +54,7 @@ public abstract class Account {
     }
 
     //получить баланс личных средств
-    public final long getBalance() {
+    public final BigDecimal getBalance() {
         return balance;
     }
 
@@ -60,7 +62,7 @@ public abstract class Account {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
-        return ((Account) o).getAccountNumber() == this.accountNumber;
+        return ((Account) o).getAccountNumber().equals(this.accountNumber);
     }
 
     @Override
@@ -69,7 +71,7 @@ public abstract class Account {
     }
 
     protected static abstract class AccountBuilder<T extends Account> {
-        protected long accountNumber;
+        protected BigInteger accountNumber;
         protected String name;
         protected String currency;
 
@@ -77,11 +79,11 @@ public abstract class Account {
 
         protected boolean isInitialized() {
             return !name.isBlank() &&
-                    accountNumber > 0 &&
+                    accountNumber.compareTo(BigInteger.ZERO) > 0 &&
                     !currency.isBlank();
         }
 
-        public void setAccountNumber(long accountNumber) {
+        public void setAccountNumber(BigInteger accountNumber) {
             this.accountNumber = accountNumber;
         }
 

@@ -31,7 +31,7 @@ public class ProcessingCenterTest {
                                 ui.println("Accounts");
                                 processingCenter.getAccountNumbers().forEach(ui::println);
                                 try {
-                                    processingCenter.setCurrentAccount(ui.getLong("Input account"));
+                                    processingCenter.setCurrentAccount(ui.getBigInteger("Input account"));
                                 } catch (AccountHasNotFoundException e) {
                                     ui.println(e.getMessage());
                                 }
@@ -39,6 +39,6 @@ public class ProcessingCenterTest {
                     new Execution("0", "exit", () -> {
                     }),
                     true);
-        } while (ui.getBoolean("Reapeat the test?", "y"));
+        } while (ui.getBoolean("Repeat the test?", "y"));
     }
 }
